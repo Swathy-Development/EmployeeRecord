@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table#AddTable{
+	width:60%;
+	border-collapse:collapse;
+	background-color:aliceblue;
+}
+
+table{
+	width:100%;
+	border-collapse:collapse;
+	
+}
+tr{
+	text-align:center;
+}
+th, td {
+    border: 1px solid black;
+	padding:10px;
+}
+p{
+	color:black;
+	font-size:10pt;
+	font-family:verdana;
+	font-weight: bold;
+}
+#AddBtn,#DeleteBtn{
+	font-size:20px;
+	border-radius:12px;
+	background-color:yellow;
+	width:100px;
+	display:inline-block;
+}
+#DelBtn{
+	font-size:20px;
+	border-radius:12px;
+	background-color:yellow;
+	width:200px;
+}
+h1{
+	text-align:center;
+}
+</style>
+</head>
+<body onload="HideDelColumns('DispTable')">
+<h1>EMPLOYEE DIRECTORY</h1>
+<table id="AddTable">
+<tr>
+	<td><p>FIRST NAME</p></td>
+	<td><input type="text" name="fName" id="fName"></input></td>
+</tr>
+<tr>
+	<td><p>LAST NAME</p></td>
+	<td><input type="text" name="lName" id="lName"></input></td>
+</tr>
+<tr>
+	<td><p>AGE</p></td>
+	<td><input type="text" name="age" id="ageVal"></input></td>
+</tr>
+<tr>
+	<td><p>GENDER</p></td>
+	<td>
+	<input type="radio" name="sexVal" id="Male" value="Male" checked="checked">Male</input>
+	<input type="radio" name="sexVal" id="Female" value="Female">Female</input>
+	<input type="radio" name="sexVal" id="other" value="Other">Third Gender</input>
+	</td>
+</tr>
+<tr>
+	<td><p>DEPARTMENT</p></td>
+	<td>
+	<select id="deptVal">
+		<option value="plselect">--Please Select--</option>
+		<option value="Technology">Technology</option>
+		<option value="Admin">Admin</option>
+		<option value="Sales">Sales</option>
+		<option value="Marketing">Marketing</option>
+		<option value="Finance">Finance</option>
+		<option value="Human Resources">Human Resources</option>
+	</select>
+	</td>
+</tr>
+<tr>
+	<td colspan=2>
+	<input type="button" id="AddBtn" value="ADD" onclick="AddEntry()"></input>
+	<input type="button" id="DeleteBtn" value="DELETE" onclick="ShowDelColumns('DispTable')"></input>
+	<input type="button" id="DelBtn" value="DELETE SELECTED" onclick="DelEntries('DispTable')"></input>
+	
+	</td>
+</tr>
+</table>
+<div></div>
+<br></br>
+
+<table id="DispTable">
+<tr>
+	<th>SELECT</th>
+	<th>FIRST NAME</th>
+	<th>LAST NAME</th>
+	<th>AGE</th>
+	<th>GENDER</th>
+	<th>DEPARTMENT</th>
+</tr>
+<tr>
+	<td>
+	<input type="checkbox" id="chk1" value="RowChk1">
+	</td>
+	<td>
+	<p id="fnEmp1"></p>
+	</td>
+	<td>
+	<p id="lnEmp1"></p>
+	</td>
+	<td>
+	<p id="ageEmp1"></p>
+	</td>
+	<td>
+	<p id="sexEmp1"></p>
+	</td>
+	<td>
+	<p id="deptEmp1"></p>
+	</td>
+</tr>
+<tr>
+	<td>
+	<input type="checkbox" id="chk2" value="RowChk2">
+	</td>
+	<td>	
+	<p id="fnEmp2"></p>
+	</td>
+	<td>
+	<p id="lnEmp2"></p>
+	</td>
+	<td>
+	<p id="ageEmp2"></p>
+	</td>
+	<td>
+	<p id="sexEmp2"></p>
+	</td>
+	<td>
+	<p id="deptEmp2"></p>
+	</td>
+</tr>
+<tr>
+	<td>
+	<input type="checkbox" id="chk3" value="RowChk3">
+	</td>
+	<td>
+	<p id="fnEmp3"></p>
+	</td>
+	<td>
+	<p id="lnEmp3"></p>
+	</td>
+	<td>
+	<p id="ageEmp3"></p>
+	</td>
+	<td>
+	<p id="sexEmp3"></p>
+	</td>
+	<td>
+	<p id="deptEmp3"></p>
+	</td>
+</tr>
+<tr>
+	<td>
+	<input type="checkbox" id="chk4" value="RowChk4">
+	</td>
+	<td>
+	<p id="fnEmp4"></p>
+	</td>
+	<td>
+	<p id="lnEmp4"></p>
+	</td>
+	<td>
+	<p id="ageEmp4"></p>
+	</td>
+	<td>
+	<p id="sexEmp4"></p>
+	</td>
+	<td>
+	<p id="deptEmp4"></p>
+	</td>
+</tr>
+<tr>
+	<td>
+	<input type="checkbox" id="chk5" value="RowChk5">
+	</td>
+	<td>
+	<p id="fnEmp5"></p>
+	</td>
+	<td>
+	<p id="lnEmp5"></p>
+	</td>
+	<td>
+	<p id="ageEmp5"></p>
+	</td>
+	<td>
+	<p id="sexEmp5"></p>
+	</td>
+	<td>
+	<p id="deptEmp5"></p>
+	</td>
+</tr>
+</table>
+</body>
+
+<script>
+
+var first;
+var last;
+var age;
+var sex;
+var dept;
+var fNameArr=[];
+var lNameArr=[];
+var ageArr=[];
+var deptArr=[];
+var sexArr=[];
+var radVal;
+var arrIndex;
+var tbId;
+var tbValLength;
+var k;
+var valLength;
+var ArrVals;
+var rChkArr=["chk1","chk2","chk3","chk4","chk5"];
+var chkNum=0;
+
+//Takes the input values from user and adds to Array 
+function AddEntry(){
+	if(fNameArr.length==5){
+		alert("Only FIVE Entries/Records can be added.")
+	}else{	
+		//Adds entries to respective arrays.
+		first=document.getElementById("fName").value;
+		last=document.getElementById("lName").value;
+		age=document.getElementById("ageVal").value;
+		sex=getRadioVal("sexVal");
+		dept=document.getElementById("deptVal").value;
+		
+		if(validateFields()){
+			fNameArr.push(first);//Adds First Name to Array.
+			lNameArr.push(last);//Adds Last Name to Array.
+			ageArr.push(age);
+			sexArr.push(sex);	
+			deptArr.push(dept);	
+			
+			var arrLength=fNameArr.length;
+			if(arrLength>0){
+				addInputValuestoArray(arrLength);
+			}
+			
+			/*//Empties the input fields and populates default values.*/
+			document.getElementById("fName").value="";
+			document.getElementById("lName").value="";
+			document.getElementById("ageVal").value="";
+			document.getElementById("deptVal").value="plselect";
+			document.getElementById("Male").checked=true;
+		}
+	}	
+}
+
+//Checks validation for Input Fields.
+function validateFields(){
+	if((first=="") || (first==" ")){
+		alert("Please enter a First Name.");
+		return false;
+	}
+	else if((last=="") || (last==" ")){
+		alert("Please enter a Last Name.");
+		return false;
+	}
+	else if((age=="") || (age==" ") || (isNaN(age)) ||(age>110)){
+		alert("Please enter a valid number for Age.");
+		return false;
+	}
+	else if(dept=="plselect"){
+		alert("Please select a Department.");
+		return false;
+	}else{
+		return true;
+	}
+}
+
+//Populates the front end fields from respective arrays.
+function addInputValuestoArray(arrIndex){
+	document.getElementById("fnEmp"+arrIndex).innerHTML=fNameArr[arrIndex-1];
+	document.getElementById("lnEmp"+arrIndex).innerHTML=lNameArr[arrIndex-1];
+	document.getElementById("ageEmp"+arrIndex).innerHTML=ageArr[arrIndex-1];
+	document.getElementById("sexEmp"+arrIndex).innerHTML=sexArr[arrIndex-1];
+	document.getElementById("deptEmp"+arrIndex).innerHTML=deptArr[arrIndex-1];
+}
+
+//Returns the checked value of the Radio Button(Gender).
+function getRadioVal(radVal){
+	
+	var radGroup=document.getElementsByName(radVal);
+	for(var i=0;i<radGroup.length;i++){
+		if(radGroup[i].checked){
+			return radGroup[i].value;
+		}
+	}	
+	return "";
+}
+
+//Hide the Check Box Column in the table onload and when Delete Selected Button is clicked.
+function HideDelColumns(tbId){
+	var tbHandle=document.getElementById(tbId);
+	var tbValLength=tbHandle.rows.length;
+	//alert(tbValLength);
+	var z;
+	for(var y=0;y<tbValLength;y++){
+		z=tbHandle.rows[y].cells;
+		z[0].style.display="none";
+	}
+	document.getElementById("DelBtn").style.display="none";
+}
+
+//Show Check Box Column in the Table when Delete Button is clicked.
+function ShowDelColumns(tbId){
+	valLength=fNameArr.length;
+	if(valLength<1){
+		alert("No entries to delete.To add entries,click the Add Button.")
+	}else{
+		var tbHandle=document.getElementById(tbId);
+		var tbValLength=tbHandle.rows.length;
+		//alert(tbValLength);
+		var z;
+		for(var y=0;y<tbValLength;y++){
+			z=tbHandle.rows[y].cells;
+			z[0].style.display="block";
+			z[0].style.display="table-cell";
+		}
+		document.getElementById("DelBtn").style.display="block";
+		document.getElementById("DeleteBtn").style.display="none";
+		document.getElementById("AddBtn").style.display="none";
+	}
+}
+
+//Empty the corresponding row's or rows' values in Arrays.
+function DelEntries(tbId){
+	
+	for(var z=0;z<rChkArr.length;z++){
+		var rChk=document.getElementById(rChkArr[z]);
+		if(rChk.checked){
+			fNameArr[z]="";
+			lNameArr[z]="";
+			ageArr[z]="";
+			deptArr[z]="";
+			sexArr[z]="";
+			rChk.checked=false;
+		}
+	}
+	delRowVals();
+	
+}
+
+//Populate the front end values with new Array without empty or null values.
+function delRowVals(){
+	var tempfNameArr=RemoveNullValues(fNameArr);
+	var templNameArr=RemoveNullValues(lNameArr);
+	var tempageArr=RemoveNullValues(ageArr);
+	var tempdeptArr=RemoveNullValues(deptArr);
+	var tempsexArr=RemoveNullValues(sexArr);
+	
+	fNameArr="";
+	lNameArr="";
+	ageArr="";
+	deptArr="";
+	sexArr="";
+	
+	fNameArr=tempfNameArr;
+	lNameArr=templNameArr;
+	ageArr=tempageArr;
+	deptArr=tempdeptArr;
+	sexArr=tempsexArr;
+	overrideInitVals();
+	
+	for(var g=0;g<fNameArr.length;g++){
+		addInputValuestoArray(g+1);
+	}
+	document.getElementById("DelBtn").style.display="none";
+	document.getElementById("DeleteBtn").style.display="inline-block";
+	document.getElementById("AddBtn").style.display="inline-block";
+	HideDelColumns('DispTable');
+	
+}
+
+//Remove Null Values in Backend Array and return new array.
+function RemoveNullValues(ArrVals){
+	var newArray = [];
+	for (var h = 0; h < ArrVals.length; h++) {
+	  if ((ArrVals[h] != undefined) && (ArrVals[h] != null) && (ArrVals[h] != "")) {
+		newArray.push(ArrVals[h]);
+	  }
+	 }
+	 //alert(newArray.toString());
+	 return newArray;
+}
+
+//Empty the front end values to populate new values after Delete operation.
+function overrideInitVals(){
+	for(var d=1;d<=5;d++){
+		document.getElementById("fnEmp"+d).innerHTML="";
+		document.getElementById("lnEmp"+d).innerHTML="";
+		document.getElementById("ageEmp"+d).innerHTML="";
+		document.getElementById("sexEmp"+d).innerHTML="";
+		document.getElementById("deptEmp"+d).innerHTML="";
+	}
+}
+</script>
+
+</html>
